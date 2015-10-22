@@ -1,0 +1,20 @@
+sudo: false
+language: cpp
+addons:
+  apt:
+    packages:
+      - libavcodec53
+      - libdc1394-22
+      - libv4l-0
+before_install:
+ - git clone git://code.opencv.org/opencv_extra.git && export OPENCV_TEST_DATA_PATH=$HOME/opencv_extra
+ - git clone git://code.opencv.org/opencv_contrib.git
+cache:
+  directories:
+  - $HOME/opencv_extra
+  - $HOME/opencv_contrib
+script:
+ - mkdir build
+ - cd build
+ - cmake -DCMAKE_INSTALL_PREFIX=install -DBUILD_SHARED_LIBS=ON -DWITH_IPP=ON -DBUILD_TESTS=ON -DWITH_OPENNI2=ON -DWITH_GDAL=ON -DGENERATE_ABI_DESCRIPTOR=ON -DBUILD_EXAMPLES=ON -DBUILD_DOCS=OFF -DWITH_OPENCL=OFF -DBUILD_PERF_TESTS=ON -DWITH_CUDA=OFF -DOPENCV_EXTRA_MODULES_PATH=$HOME/opencv_contrib/modules ..
+ - make -j3 install
